@@ -197,6 +197,21 @@
                 if (e.key === 'Enter') addTask();
             });
 
+            // Vérifier la disponibilité de localStorage
+            function checkLocalStorage() {
+                try {
+                    const test = '__localStorage_test__';
+                    localStorage.setItem(test, test);
+                    localStorage.removeItem(test);
+                    return true;
+                } catch(e) {
+                    alert('localStorage n\'est pas disponible. Les tâches ne seront pas sauvegardées.');
+                    return false;
+                }
+            }
+
+            checkLocalStorage();
+
             // Afficher les tâches au chargement
             renderTasks();
         </script>
