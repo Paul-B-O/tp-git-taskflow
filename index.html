@@ -1,170 +1,205 @@
 <!DOCTYPE html>
 <html lang="fr">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TaskFlow - Gestionnaire de tâches</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>TaskFlow - Gestionnaire de tâches</title>
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
+            body {
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                min-height: 100vh;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                padding: 20px;
+            }
 
-        .container {
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-            width: 100%;
-            max-width: 600px;
-            padding: 30px;
-        }
+            .container {
+                background: white;
+                border-radius: 15px;
+                box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+                width: 100%;
+                max-width: 600px;
+                padding: 30px;
+            }
 
-        h1 {
-            color: #667eea;
-            margin-bottom: 10px;
-            font-size: 2em;
-        }
+            h1 {
+                color: #667eea;
+                margin-bottom: 10px;
+                font-size: 2em;
+            }
 
-        .subtitle {
-            color: #888;
-            margin-bottom: 30px;
-            font-size: 0.9em;
-        }
-    </style>
-    <style>
-        .input-group {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
+            .subtitle {
+                color: #888;
+                margin-bottom: 30px;
+                font-size: 0.9em;
+            }
+        </style>
+        <style>
+            .input-group {
+                display: flex;
+                gap: 10px;
+                margin-bottom: 20px;
+            }
 
-        #taskInput {
-            flex: 1;
-            padding: 12px 15px;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            font-size: 1em;
-            transition: border-color 0.3s;
-        }
+            #taskInput {
+                flex: 1;
+                padding: 12px 15px;
+                border: 2px solid #e0e0e0;
+                border-radius: 8px;
+                font-size: 1em;
+                transition: border-color 0.3s;
+            }
 
-        #taskInput:focus {
-            outline: none;
-            border-color: #667eea;
-        }
+            #taskInput:focus {
+                outline: none;
+                border-color: #667eea;
+            }
 
-        #addBtn {
-            padding: 12px 25px;
-            background: #667eea;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: background 0.3s;
-        }
+            #addBtn {
+                padding: 12px 25px;
+                background: #667eea;
+                color: white;
+                border: none;
+                border-radius: 8px;
+                cursor: pointer;
+                font-weight: 600;
+                transition: background 0.3s;
+            }
 
-        #addBtn:hover {
-            background: #5568d3;
-        }
+            #addBtn:hover {
+                background: #5568d3;
+            }
 
-        #taskList {
-            list-style: none;
-        }
+            #taskList {
+                list-style: none;
+            }
 
-        #taskList li {
-            background: #f8f9fa;
-            padding: 15px;
-            margin-bottom: 10px;
-            border-radius: 8px;
-            border-left: 4px solid #667eea;
-            transition: all 0.3s;
-        }
+            #taskList li {
+                background: #f8f9fa;
+                padding: 15px;
+                margin-bottom: 10px;
+                border-radius: 8px;
+                border-left: 4px solid #667eea;
+                transition: all 0.3s;
+            }
 
-        #taskList li:hover {
-            background: #e9ecef;
-            transform: translateX(5px);
-        }
-    </style>
-</head>
+            #taskList li:hover {
+                background: #e9ecef;
+                transform: translateX(5px);
+            }
 
-<body>
-    <div class="container">
-        <h1>✅ TaskFlow</h1>
-        <p class="subtitle">Gérez vos tâches efficacement</p>
-    </div>
-    <div class="input-group">
-        <input type="text" id="taskInput" placeholder="Nouvelle tâche..." />
-        <button id="addBtn">Ajouter</button>
-    </div>
-    <ul id="taskList"></ul>
+            #taskList li {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
 
-    <script>
-        const taskInput = document.getElementById('taskInput');
-        const addBtn = document.getElementById('addBtn');
-        const taskList = document.getElementById('taskList');
+            .deleteBtn {
+                background: #ff6b6b;
+                color: white;
+                border: none;
+                padding: 8px 12px;
+                border-radius: 5px;
+                cursor: pointer;
+                transition: background 0.3s;
+            }
 
-        // Charger les tâches depuis localStorage
-        let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+            .deleteBtn:hover {
+                background: #ee5a52;
+            }
+        </style>
+    </head>
 
-        // Fonction pour sauvegarder dans localStorage
-        function saveTasks() {
-            localStorage.setItem('tasks', JSON.stringify(tasks));
-        }
+    <body>
+        <div class="container">
+            <h1>✅ TaskFlow</h1>
+            <p class="subtitle">Gérez vos tâches efficacement</p>
+        </div>
+        <div class="input-group">
+            <input type="text" id="taskInput" placeholder="Nouvelle tâche..." />
+            <button id="addBtn">Ajouter</button>
+        </div>
+        <ul id="taskList"></ul>
 
-        // Fonction pour afficher les tâches
-        function renderTasks() {
-            taskList.innerHTML = '';
-            tasks.forEach((task, index) => {
-                const li = document.createElement('li');
-                li.innerHTML = `
-            <span>${task}</span>
+        <script>
+            const taskInput = document.getElementById('taskInput');
+            const addBtn = document.getElementById('addBtn');
+            const taskList = document.getElementById('taskList');
+
+
+
+            // Fonction pour sauvegarder dans localStorage
+            function saveTasks() {
+                localStorage.setItem('tasks', JSON.stringify(tasks));
+            }
+
+            // Fonction pour afficher les tâches
+            // Modifier renderTasks
+            function renderTasks() {
+                taskList.innerHTML = '';
+                tasks.forEach((task, index) => {
+                    const li = document.createElement('li');
+                    li.className = task.completed ? 'completed' : '';
+                    li.innerHTML = `
+            <input type="checkbox" class="checkbox" data-index="${index}" ${task.completed ? 'checked' : ''}>
+            <span>${task.text}</span>
             <button class="deleteBtn" data-index="${index}">🗑️</button>
         `;
-                taskList.appendChild(li);
-            });
+                    taskList.appendChild(li);
+                });
 
-            // Ajouter les écouteurs pour les boutons de suppression
-            document.querySelectorAll('.deleteBtn').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    const index = parseInt(e.target.dataset.index);
-                    tasks.splice(index, 1);
+                // Écouteurs pour checkboxes
+                document.querySelectorAll('.checkbox').forEach(cb => {
+                    cb.addEventListener('change', (e) => {
+                        const index = parseInt(e.target.dataset.index);
+                        tasks[index].completed = e.target.checked;
+                        saveTasks();
+                        renderTasks();
+                    });
+                });
+
+                // Écouteurs pour suppression
+                document.querySelectorAll('.deleteBtn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const index = parseInt(e.target.dataset.index);
+                        tasks.splice(index, 1);
+                        saveTasks();
+                        renderTasks();
+                    });
+                });
+            }
+
+
+            // Modifier l'initialisation
+            let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+
+            function addTask() {
+                const task = taskInput.value.trim();
+                if (task) {
+                    tasks.push({ text: task, completed: false });
                     saveTasks();
                     renderTasks();
-                });
-            });
-        }
-
-        // Ajouter une tâche
-        function addTask() {
-            const task = taskInput.value.trim();
-            if (task) {
-                tasks.push(task);
-                saveTasks();
-                renderTasks();
-                taskInput.value = '';
+                    taskInput.value = '';
+                }
             }
-        }
 
-        addBtn.addEventListener('click', addTask);
-        taskInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') addTask();
-        });
+            addBtn.addEventListener('click', addTask);
+            taskInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') addTask();
+            });
 
-        // Afficher les tâches au chargement
-        renderTasks();
-    </script>
-</body>
+            // Afficher les tâches au chargement
+            renderTasks();
+        </script>
+    </body>
 
 </html>
