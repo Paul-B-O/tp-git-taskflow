@@ -136,7 +136,11 @@
             const taskList = document.getElementById('taskList');
 
 
-
+            function randrange(min, max) {
+                min = Math.ceil(min);
+                max = Math.floor(max);
+                return Math.floor(Math.random() * (max - min) + min);
+            }
             // Fonction pour sauvegarder dans localStorage
             function saveTasks() {
                 localStorage.setItem('tasks', JSON.stringify(tasks));
@@ -163,7 +167,18 @@
                         const index = parseInt(e.target.dataset.index);
                         tasks[index].completed = e.target.checked;
                         saveTasks();
-                        renderTasks();
+                        if (tasks[index].completed) {
+                            const task = e.target.parentElement;
+                            let deg = 0;
+                            let it = setInterval(() => {
+                                task.style.transform += `rotate(${deg}deg)`;
+                                deg += 1;
+                            }, 50);
+                            setTimeout(() => {
+                                task.style.transform = 'none';
+                                clearInterval(it);
+                            }, 5000);
+                        }
                     });
                 });
 
